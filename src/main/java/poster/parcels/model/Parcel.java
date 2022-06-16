@@ -1,0 +1,42 @@
+package poster.parcels.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import poster.addressees.model.Addressee;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "parcels")
+public class Parcel {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "sender_Id")
+    private int senderId;
+
+    @Column(name = "sending_date_of_time")
+    private LocalDateTime sendingDateOfTime;
+
+    @Enumerated(EnumType.STRING)
+    private ParcelType parcelType;
+
+    @ManyToOne
+    @JoinColumn(name = "addressee_id")
+    private Addressee addressee;
+
+    public Parcel(int senderId, LocalDateTime sendingDateOfTime, ParcelType parcelType) {
+        this.senderId = senderId;
+        this.sendingDateOfTime = sendingDateOfTime;
+        this.parcelType = parcelType;
+    }
+}
