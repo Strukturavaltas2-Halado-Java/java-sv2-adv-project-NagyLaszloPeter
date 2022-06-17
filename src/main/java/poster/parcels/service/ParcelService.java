@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import poster.parcels.dtos.CreateNewParcelCommand;
+import poster.parcels.dtos.CreateParcelCommand;
 import poster.parcels.dtos.ParcelDto;
 import poster.parcels.exceptions.ParcelNotFoundException;
 import poster.parcels.model.Parcel;
@@ -24,13 +24,13 @@ public class ParcelService {
     private ModelMapper modelMapper;
 
 
-    public List<ParcelDto> getAllParcels() {
+    public List<ParcelDto> readAllParcels() {
         return parcelRepository.findAll().stream()
                 .map(parcel -> modelMapper.map(parcel, ParcelDto.class))
                 .collect(Collectors.toList());
     }
 
-    public ParcelDto createNewParcel(CreateNewParcelCommand command) {
+    public ParcelDto createParcel(CreateParcelCommand command) {
         Parcel parcel = modelMapper.map(command, Parcel.class);
         parcelRepository.save(parcel);
         return modelMapper.map(parcel, ParcelDto.class);

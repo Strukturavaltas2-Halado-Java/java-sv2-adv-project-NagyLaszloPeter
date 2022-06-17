@@ -1,0 +1,51 @@
+###
+GET http://localhost:8080/api/addressees
+Accept: application/json
+###
+POST http://localhost:8080/api/addressees/1/parcels
+Accept: application/json
+Content-Type: application/json
+
+{
+  "senderId": "1A2b-3C4d-5E6f-8G9H",
+  "sendingDateOfTime": "2022-06-16T01:23:45",
+  "parcelType": "HUGE"
+}
+###
+POST http://localhost:8080/api/addressees
+Accept: application/json
+Content-Type: application/json
+
+{
+  "addresseeName": "Teszt Elek",
+  "postCode": 1234,
+  "settlement": "Tahitótfalu",
+  "addresseeNumber": "Hrsz: 12345/99/55/ABC",
+  "parcels": [
+    {
+      "senderId": "1A2b-3C4d-5E6f-8G9H",
+      "sendingDateOfTime": "2022-06-16T01:23:45",
+      "parcelType": "HUGE"
+    }
+  ]
+}
+###
+PUT http://localhost:8080/api/addressees/1/parcels
+Accept: application/json
+Content-Type: application/json
+
+{
+  "senderId": "2A2b-3C4d-5E6f-8G9H",
+  "sendingDateOfTime": "2022-06-16T01:23:45",
+  "parcelType": "HUGE"
+}
+###
+PUT http://localhost:8080/api/addressees/1/parcels
+Accept: application/json
+Content-Type: application/json
+
+{
+  "parcelId": 2
+}
+
+###

@@ -4,12 +4,13 @@ import lombok.*;
 import poster.parcels.model.Parcel;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 @Entity
 @Table(name = "addressees")
 public class Addressee {
@@ -30,18 +31,18 @@ public class Addressee {
     private String addresseeNumber;
 
     @OneToMany(mappedBy = "addressee", cascade = CascadeType.PERSIST)
-    private List<Parcel> parcels;
+    private List<Parcel> parcels = new ArrayList<>();
 
-    public Addressee(String addresseeName, int postCode, String settlement, String addresseeNumber, List<Parcel> packages) {
+    public Addressee(String addresseeName, int postCode, String settlement, String addresseeNumber, List<Parcel> parcels) {
         this.addresseeName = addresseeName;
         this.postCode = postCode;
         this.settlement = settlement;
         this.addresseeNumber = addresseeNumber;
-        this.parcels = packages;
+        this.parcels = parcels;
     }
 
 
-    public void addPackages(Parcel parcel) {
+    public void addParcels(Parcel parcel) {
         parcels.add(parcel);
         parcel.setAddressee(this);
     }

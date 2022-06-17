@@ -3,7 +3,7 @@ CREATE TABLE parcels
     id                   BIGINT AUTO_INCREMENT NOT NULL,
     sender_id            VARCHAR(19)               NULL,
     sending_date_of_time datetime                  NULL,
-    parcel_type          VARCHAR(255)              NULL,
+    parcel_type          VARCHAR(25)               NULL,
     addressee_id         BIGINT                    NULL,
     CONSTRAINT pk_parcels PRIMARY KEY (id)
 );

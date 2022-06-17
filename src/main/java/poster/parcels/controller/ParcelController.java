@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import poster.parcels.dtos.CreateNewParcelCommand;
+import poster.parcels.dtos.CreateParcelCommand;
 import poster.parcels.dtos.ParcelDto;
 import poster.parcels.service.ParcelService;
 
@@ -24,19 +24,19 @@ public class ParcelController {
 
     @GetMapping
     @Operation(summary = "List All Parcels")
-    @ApiResponse(responseCode = "200", description = "Parcel query success.")
-    public List<ParcelDto> listAllParcels() {
-        return parcelService.getAllParcels();
+    @ApiResponse(responseCode = "200", description = "Parcels query success.")
+    public List<ParcelDto> getAllParcels() {
+        return parcelService.readAllParcels();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Parcel-Creator")
     @ApiResponse(responseCode = "201", description = "Parcel created.")
-    public ParcelDto createNewParcel(
+    public ParcelDto postNewParcel(
             @Valid
-            @RequestBody CreateNewParcelCommand createNewParcelCommand){
-        return parcelService.createNewParcel(createNewParcelCommand);
+            @RequestBody CreateParcelCommand createCommand){
+        return parcelService.createParcel(createCommand);
     }
 
     @DeleteMapping("/{id}")

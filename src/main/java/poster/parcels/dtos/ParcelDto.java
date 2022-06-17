@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Setter @Getter
 public class ParcelDto {
     private Long id;
     private String senderId;
