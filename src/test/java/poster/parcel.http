@@ -1,0 +1,18 @@
+### CREATE ONE
+POST http://localhost:8080/api/parcels
+Accept: application/json
+Content-Type: application/json
+
+{
+  "senderId":"1A2b-3C4d-5E6f-8G9H",
+  "sendingDateOfTime":"2022-06-16T01:23:45",
+  "parcelType": "HUGE"
+
+}
+### GET ALL
+GET http://localhost:8080/api/parcels
+Accept: application/json
+### DELETE ID
+DELETE http://localhost:8080/api/parcels/3
+### DELETE NOT FOUND
+DELETE http://localhost:8080/api/parcels/500

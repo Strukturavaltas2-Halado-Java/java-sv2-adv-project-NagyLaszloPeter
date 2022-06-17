@@ -11,8 +11,7 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @Entity
 @Table(name = "parcels")
 public class Parcel {
@@ -22,7 +21,7 @@ public class Parcel {
     private Long id;
 
     @Column(name = "sender_Id")
-    private int senderId;
+    private String senderId;
 
     @Column(name = "sending_date_of_time")
     private LocalDateTime sendingDateOfTime;
@@ -34,7 +33,7 @@ public class Parcel {
     @JoinColumn(name = "addressee_id")
     private Addressee addressee;
 
-    public Parcel(int senderId, LocalDateTime sendingDateOfTime, ParcelType parcelType) {
+    public Parcel(String senderId, LocalDateTime sendingDateOfTime, ParcelType parcelType) {
         this.senderId = senderId;
         this.sendingDateOfTime = sendingDateOfTime;
         this.parcelType = parcelType;
