@@ -19,14 +19,12 @@ public class CreateAddresseeCommand {
     @NotBlank(message = "Addressee name must not blank.")
     @Size(min = 3, max = 100)
     @Schema(description = "Name of the Addressee.",
-            example = "3 character TO 100 character")
+            example = "Training 360 Kft.")
     private String addresseeName;
 
     @NotNull(message = "Addressee postcode must not be null.")
     @Min(value = 1000, message = "Addressee postcode minimal number 1000.")
     @Max(value = 1_000_000, message = "Addressee postcode maximal number 1.000.000.")
-//    @Pattern(regexp = "[0-9]",
-//            message = "Wrong Sender ID format.")
     @Schema(description = "Postcode of the Addressee.",
             example = "1234")
     private int postCode;
@@ -43,6 +41,5 @@ public class CreateAddresseeCommand {
             example = "Hrsz: 12345/6789/01234565")
     private String addresseeNumber;
 
-    @NotNull(message = "Addressee parcel must not be null")
     private List<CreateParcelCommand> parcels;
 }

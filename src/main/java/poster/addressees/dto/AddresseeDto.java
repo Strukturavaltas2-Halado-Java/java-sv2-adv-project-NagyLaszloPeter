@@ -1,9 +1,6 @@
 package poster.addressees.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import poster.parcels.dtos.ParcelDto;
 
 import java.util.List;

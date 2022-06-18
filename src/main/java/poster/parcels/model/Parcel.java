@@ -29,7 +29,7 @@ public class Parcel {
     @Enumerated(EnumType.STRING)
     private ParcelType parcelType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "addressee_id")
     private Addressee addressee;
 

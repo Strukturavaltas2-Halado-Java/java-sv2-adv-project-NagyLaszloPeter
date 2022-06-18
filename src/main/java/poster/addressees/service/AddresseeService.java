@@ -32,35 +32,31 @@ public class AddresseeService {
 
 
     public List<AddresseeDto> readAllAddressees() {
-        return parcelRepository.findAll().stream()
-                .map(parcel -> modelMapper.map(parcel, AddresseeDto.class))
+        return addresseeRepository.findAll().stream()
+                .map(addressee -> modelMapper.map(addressee, AddresseeDto.class))
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public AddresseeDto createAddressee(CreateAddresseeCommand createCommand) {
-        List<Parcel> parcels = createCommand.getParcels().stream()
-                .map(createParcelCommand -> modelMapper.map(createCommand, Parcel.class))
-                .collect(Collectors.toList());
-        Addressee addressee = modelMapper.map(createCommand, Addressee.class);
-        parcels
-                .forEach(parcel -> parcel.setAddressee(addressee));
+    public AddresseeDto createAddressee(CreateAddresseeCommand createAddresseeCommand) {
+        Addressee addressee = modelMapper
+                .map(createAddresseeCommand, Addressee.class);
+        addressee.getParcels()
+                .forEach(addressee::assignParcel);
         addresseeRepository
                 .save(addressee);
-        return modelMapper.map(addressee, AddresseeDto.class);
+        return modelMapper
+                .map(addressee, AddresseeDto.class);
     }
 
     @Transactional
     public AddresseeDto createParcelToAddressById(Long id, CreateParcelCommand createParcelCommand) {
-        Addressee addressee = addresseeRepository
-                .findById(id)
-                .orElseThrow(() -> new AddresseeNotFoundException(id));
-        Parcel parcel = modelMapper
-                .map(createParcelCommand, Parcel.class);
-        parcelRepository
-                .save(parcel);
-        return modelMapper
-                .map(addressee, AddresseeDto.class);
+        Addressee addressee = getAddresseeById(id);
+        Parcel parcel = modelMapper.map(createParcelCommand, Parcel.class);
+        validateParcel(parcel, addressee);
+        addressee.addParcels(parcel);
+        parcelRepository.save(parcel);
+        return modelMapper.map(addressee, AddresseeDto.class);
     }
 
     @Transactional
@@ -71,26 +67,37 @@ public class AddresseeService {
         Parcel parcel = parcelRepository
                 .findById(updateCommand.getParcelId())
                 .orElseThrow(() -> new ParcelNotFoundException(updateCommand.getParcelId()));
-
-        addressChecker(parcel, addressee);
+        validateParcel(parcel, addressee);
         addressee.addParcels(parcel);
         return modelMapper
                 .map(addressee, AddresseeDto.class);
     }
 
-    private void addressChecker(Parcel parcel, Addressee addressee) {
+    @Transactional
+    public void deleteAddresseeById(long id) {
+            parcelRepository.deleteAll(getAddresseeById(id).getParcels());
+            addresseeRepository.deleteById(id);
+    }
+
+
+    private Addressee getAddresseeById(long id) {
+        return addresseeRepository.findById(id)
+                .orElseThrow(() -> new AddresseeNotFoundException(id));
+    }
+
+    private void validateParcel(Parcel parcel, Addressee addressee) {
         if (parcel.getAddressee() != null) {
-            throw new IllegalArgumentException("Parcel has one addressee! Addressee: " + parcel.getAddressee());
+            throw new IllegalArgumentException("Parcel already has one addressee by ID: " + parcel.getAddressee().getId());
         }
-        int logisticsLoad = parcelCapacityChecker(addressee, parcel.getParcelType());
+        int logisticsLoad = calculateLogisticsLoad(addressee, parcel.getParcelType());
         if (logisticsLoad > LOGISTICS_CAPACITY) {
             throw new LogisticsLoadOverLimitException(logisticsLoad);
         }
     }
 
-    private int parcelCapacityChecker(Addressee addressee, ParcelType parcelType) {
-        return Math.toIntExact(addressee.getParcels().stream()
-                .filter(parcel -> parcel.getParcelType() == parcelType)
-                .count());
+    private int calculateLogisticsLoad(Addressee addressee, ParcelType parcelType) {
+        return addressee.getParcels().stream()
+                .mapToInt(value -> value.getParcelType().getCapacity())
+                .sum() + parcelType.getCapacity();
     }
 }

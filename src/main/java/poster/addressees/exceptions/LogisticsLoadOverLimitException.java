@@ -8,8 +8,8 @@ import java.net.URI;
 public class LogisticsLoadOverLimitException extends AbstractThrowableProblem {
     public LogisticsLoadOverLimitException(int logisticsLoad) {
         super(URI.create("parcel/addressee-Logistics-Load-Over"),
-                "To much capacity",
+                "To much load capacity",
                 Status.NOT_ACCEPTABLE,
-                String.format("Capacity to Addressee: %d", logisticsLoad));
+                String.format("This load capacity in Addressee: %d", logisticsLoad));
     }
 }

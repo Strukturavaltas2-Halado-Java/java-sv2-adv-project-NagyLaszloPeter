@@ -32,7 +32,7 @@ public class AddresseeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @Operation(summary = "Addressee-Creator")
+    @Operation(summary = "Addressee & Parcel-Creator")
     @ApiResponse(responseCode = "201", description = "Addressee created.")
     public AddresseeDto postAddressee(
             @Valid
@@ -46,12 +46,12 @@ public class AddresseeController {
     public AddresseeDto postParcelToAddressee(
             @Valid
             @PathVariable("id") Long id,
-            @RequestBody CreateParcelCommand createCommand){
+            @RequestBody CreateParcelCommand createCommand) {
         return addresseeService.createParcelToAddressById(id, createCommand);
-}
+    }
 
     @PutMapping("/{id}/parcels")
-    @Operation(summary = "Update parcels Addressee")
+    @Operation(summary = "Update unaddressed parcels Addressee")
     @ApiResponse(responseCode = "200",
             description = "Parcels Addressee updated.")
     public AddresseeDto putParcelsAddressee(
@@ -59,5 +59,15 @@ public class AddresseeController {
             @Valid
             @RequestBody UpdateAddresseeWithUnaddressedParcelCommand updateCommand) {
         return addresseeService.updateAddresseeWithUnaddressedParcel(id, updateCommand);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "DELETE: Addressee with all parcells")
+    @ApiResponse(responseCode = "204",
+            description = "Addressee deleted.")
+    public void deleteLocation(
+            @PathVariable("id") long id) {
+        addresseeService.deleteAddresseeById(id);
     }
 }

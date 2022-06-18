@@ -46,4 +46,8 @@ public class Addressee {
         parcels.add(parcel);
         parcel.setAddressee(this);
     }
+
+    public void assignParcel(Parcel parcel) {
+        parcel.setAddressee(this);
+    }
 }
