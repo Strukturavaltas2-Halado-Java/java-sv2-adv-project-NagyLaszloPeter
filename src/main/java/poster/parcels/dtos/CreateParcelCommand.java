@@ -23,7 +23,7 @@ public class CreateParcelCommand {
             example = "1A2b-3C4d-5E6f-8G9H")
     private String senderId;
 
-    @Past(message = "Date is not past or present.")
+    @PastOrPresent(message = "Date can at take place in the future.")
     @NotNull(message = "Date must not null.")
     private LocalDateTime sendingDateOfTime;
 

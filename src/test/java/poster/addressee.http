@@ -3,6 +3,10 @@
 GET http://localhost:8080/api/addressees
 Accept: application/json
 
+### Addressee ID alapján lekérdezés
+GET http://localhost:8080/api/addressees/1
+Accept: application/json
+
 ### Címzett csomag létrehozása/rögzítése
 POST http://localhost:8080/api/addressees
 Accept: application/json

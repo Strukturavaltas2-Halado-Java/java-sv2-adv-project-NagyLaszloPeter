@@ -30,6 +30,11 @@ public class ParcelService {
                 .collect(Collectors.toList());
     }
 
+    public ParcelDto readParcelFromId(long id) {
+        return modelMapper.map(getParcelId(id), ParcelDto.class);
+    }
+
+
     public ParcelDto createParcel(CreateParcelCommand command) {
         Parcel parcel = modelMapper.map(command, Parcel.class);
         parcelRepository.save(parcel);
@@ -43,5 +48,10 @@ public class ParcelService {
         } catch (EmptyResultDataAccessException erdae){
             throw new ParcelNotFoundException(id);
         }
+    }
+
+    private Parcel getParcelId(long id) {
+        return parcelRepository.findById(id)
+                .orElseThrow(() -> new ParcelNotFoundException(id));
     }
 }

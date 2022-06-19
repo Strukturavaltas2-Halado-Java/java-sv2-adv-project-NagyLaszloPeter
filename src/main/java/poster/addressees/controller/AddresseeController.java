@@ -23,12 +23,19 @@ public class AddresseeController {
 
 
     @GetMapping
-    @Operation(summary = "List All Addressees", description = "Show the Addresses list Java-Babe.")
+    @Operation(summary = "List all Addressees", description = "Show the Addresses list Java-Babe.")
     @ApiResponse(responseCode = "200", description = "Addresses-Query success.")
     public List<AddresseeDto> getAllAddressees() {
         return addresseeService.readAllAddressees();
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Find one Addressee from ID")
+    @ApiResponse(responseCode = "200", description = "Addressee-Query success.")
+    public AddresseeDto getAddresseeById(
+            @PathVariable("id") long id) {
+        return addresseeService.readAddresseeFromId(id);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)

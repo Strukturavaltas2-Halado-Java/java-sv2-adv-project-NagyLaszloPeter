@@ -37,6 +37,10 @@ public class AddresseeService {
                 .collect(Collectors.toList());
     }
 
+    public AddresseeDto readAddresseeFromId(long id) {
+        return modelMapper.map(getAddresseeById(id), AddresseeDto.class);
+    }
+
     @Transactional
     public AddresseeDto createAddressee(CreateAddresseeCommand createAddresseeCommand) {
         Addressee addressee = modelMapper
@@ -75,8 +79,8 @@ public class AddresseeService {
 
     @Transactional
     public void deleteAddresseeById(long id) {
-            parcelRepository.deleteAll(getAddresseeById(id).getParcels());
-            addresseeRepository.deleteById(id);
+        parcelRepository.deleteAll(getAddresseeById(id).getParcels());
+        addresseeRepository.deleteById(id);
     }
 
 
@@ -91,7 +95,7 @@ public class AddresseeService {
         }
         int logisticsLoad = calculateLogisticsLoad(addressee, parcel.getParcelType());
         if (logisticsLoad > LOGISTICS_CAPACITY) {
-            throw new LogisticsLoadOverLimitException(logisticsLoad);
+            throw new LogisticsLoadOverLimitException(logisticsLoad, AddresseeService.LOGISTICS_CAPACITY);
         }
     }
 

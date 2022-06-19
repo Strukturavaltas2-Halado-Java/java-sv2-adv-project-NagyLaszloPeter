@@ -6,16 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
 import poster.addressees.dto.AddresseeDto;
 import poster.addressees.dto.CreateAddresseeCommand;
 import poster.addressees.dto.UpdateAddresseeWithUnaddressedParcelCommand;
 import poster.parcels.dtos.CreateParcelCommand;
 import poster.parcels.dtos.ParcelDto;
 import poster.parcels.model.ParcelType;
+
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(statements = {"DELETE FROM parcels", "DELETE FROM addressees"})
@@ -25,7 +31,6 @@ class AddresseeControllerIT {
     WebTestClient webTestClient;
 
     AddresseeDto addresseeDto;
-
 
     @BeforeEach
     void setUp() {
@@ -37,6 +42,7 @@ class AddresseeControllerIT {
                 .expectBody(AddresseeDto.class)
                 .returnResult().getResponseBody();
     }
+
 
     @Test
     void getAllAddressees() {
@@ -55,6 +61,23 @@ class AddresseeControllerIT {
                         .hasSize(1)
                         .extracting(parcelDtos -> parcelDtos.get(0).getSendingDateOfTime())
                         .isEqualTo(List.of(LocalDateTime.of(2022, 6, 16, 16, 16, 16))));
+    }
+
+    @Test
+    void testGetAddresseeById() {
+        webTestClient.get()
+                .uri("api/addressees/{id}", addresseeDto.getId())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(AddresseeDto.class)
+
+                .value(addresseeDto -> assertThat(addresseeDto.getAddresseeName())
+                        .isEqualTo("Training 360 Kft."))
+
+                .value(addresseeDto -> assertThat(addresseeDto.getParcels())
+                        .hasSize(1)
+                        .extracting(ParcelDto::getSenderId)
+                        .containsOnly("1A2b-3C4d-5E6f-8G9H"));
     }
 
     @Test
@@ -104,19 +127,47 @@ class AddresseeControllerIT {
     }
 
     @Test
-    void testDeleteAddressee() {
+    void testLogisticsLoadOverLimit() {
+        Problem problem = webTestClient.post()
+                .uri(uriBuilder -> uriBuilder.path("api/addressees/{id}/parcels")
+                        .build(addresseeDto.getId()))
+                .bodyValue(new CreateParcelCommand(
+                        "OVER-SIZE-5E6f-8G9H", LocalDateTime.of(2022, 6, 16, 16, 16, 16), ParcelType.OVERSIZE))
+                .exchange()
+                .expectStatus().is4xxClientError()
+                .expectBody(Problem.class)
+                .returnResult().getResponseBody();
+
+        assertThat(problem)
+                .extracting(Problem::getType, Problem::getTitle, Problem::getStatus, Problem::getDetail)
+                .containsExactly(
+                        URI.create("parcel/addressee-Logistics-Load-Over"),
+                        "To much load capacity",
+                        Status.NOT_ACCEPTABLE,
+                        "This load capacity in Addressee: 18");
+    }
+
+    @Test
+    void testDeleteAddresseeAndAddresseeNotFound() {
         webTestClient.delete()
                 .uri("/api/addressees/{id}", addresseeDto.getId())
                 .exchange()
-                .expectStatus().isNoContent();
+                .expectStatus().isNoContent()
+                .expectBody().isEmpty();
 
-        webTestClient.get()
-                .uri("/api/addressees")
+        Problem problem = webTestClient.get()
+                .uri("/api/addressees/{id}", addresseeDto.getId())
                 .exchange()
-                .expectStatus().isOk()
-                .expectBodyList(AddresseeDto.class)
+                .expectStatus().isNotFound()
+                .expectBody(Problem.class)
+                .returnResult().getResponseBody();
 
-                .value(addresseeDtos -> assertThat(addresseeDtos)
-                        .isEmpty());
+        assertThat(problem)
+                .extracting(Problem::getType, Problem::getTitle, Problem::getStatus, Problem::getDetail)
+                .containsExactly(
+                        URI.create("addressees/addressee-NOT-FOUND"),
+                        "Addressee not found",
+                        Status.NOT_FOUND,
+                        String.format("Addressee not found with ID: %d", addresseeDto.getId()));
     }
 }

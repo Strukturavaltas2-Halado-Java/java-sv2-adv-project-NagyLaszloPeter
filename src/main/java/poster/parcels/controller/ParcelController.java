@@ -23,10 +23,18 @@ public class ParcelController {
     private ParcelService parcelService;
 
     @GetMapping
-    @Operation(summary = "List All Parcels")
-    @ApiResponse(responseCode = "200", description = "Parcels query success.")
+    @Operation(summary = "List all Parcels")
+    @ApiResponse(responseCode = "200", description = "Parcels-Query success.")
     public List<ParcelDto> getAllParcels() {
         return parcelService.readAllParcels();
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Find one Parcel from ID")
+    @ApiResponse(responseCode = "200", description = "Parcel-Query success.")
+    public ParcelDto getParcelById(
+            @PathVariable("id") long id) {
+        return parcelService.readParcelFromId(id);
     }
 
     @PostMapping
