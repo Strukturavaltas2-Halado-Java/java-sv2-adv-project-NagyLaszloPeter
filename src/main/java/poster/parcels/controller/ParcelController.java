@@ -33,7 +33,7 @@ public class ParcelController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Parcel-Creator")
     @ApiResponse(responseCode = "201", description = "Parcel created.")
-    public ParcelDto postNewParcel(
+    public ParcelDto postParcel(
             @Valid
             @RequestBody CreateParcelCommand createCommand){
         return parcelService.createParcel(createCommand);

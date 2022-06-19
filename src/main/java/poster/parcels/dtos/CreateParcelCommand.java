@@ -24,6 +24,7 @@ public class CreateParcelCommand {
     private String senderId;
 
     @Past(message = "Date is not past or present.")
+    @NotNull(message = "Date must not null.")
     private LocalDateTime sendingDateOfTime;
 
     @NotNull(message = "Parcel type must not be null.")
