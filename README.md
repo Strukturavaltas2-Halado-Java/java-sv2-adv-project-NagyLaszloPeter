@@ -6,7 +6,8 @@
 ***
 ###
 A PostEr egy modulárisan kiegészíthető, és egyszerűen továbbfejleszthető csomagküldés nyilvántartást szimuláló
-többrétegű, alapvetően Java, és MariaDB technológiákat használó alkalmazás.
+többrétegű, alapvetően Java, és MariaDB technológiákat használó alkalmazás, amely OpenAPI-specifikációt használó,
+Swagger UI eszközzel támogatott.
 
 #### Támogatott alkalmazás szerver:
 - Apache Tomcat
@@ -67,7 +68,7 @@ a címzetthez rendelve.
 
 ### Web réteg (Presentacion)
 ***
-#### API végpontok: ***[Swagger Ui](http://localhost:8080/v3/api-docs)***
+#### API végpontok: ***[Swagger UI](http://localhost:8080/v3/api-docs)***
 
 `AddresseeController` végpontja `/api/addresses`
 
