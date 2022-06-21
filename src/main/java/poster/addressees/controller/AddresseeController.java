@@ -58,6 +58,7 @@ public class AddresseeController {
     }
 
     @PutMapping("/{id}/parcels")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @Operation(summary = "Update unaddressed parcels Addressee")
     @ApiResponse(responseCode = "200",
             description = "Parcels Addressee updated.")
