@@ -37,6 +37,15 @@ public class AddresseeService {
         return modelMapper.map(validateAndGetAddresseeById(id), AddresseeDto.class);
     }
 
+    public List<AddresseeDto> getAddresseesAndParcelsOptionalSettlementAndParcelType(
+            Optional<String> settlement, Optional<ParcelType> parcelType) {
+
+        return addresseeRepository.readAddresseesAndParcelsOptionalSettlementAndParcelType(settlement, parcelType)
+                .stream()
+                .map(addressee -> modelMapper.map(addressee, AddresseeDto.class))
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public AddresseeDto createAddressee(CreateAddresseeCommand createAddresseeCommand) {
         Addressee addressee = modelMapper
@@ -100,14 +109,5 @@ public class AddresseeService {
         return addressee.getParcels().stream()
                 .mapToInt(value -> value.getParcelType().getCapacity())
                 .sum() + parcelType.getCapacity();
-    }
-
-    public List<AddresseeDto> getAddresseesAndParcelsOptionalSettlementAndParcelType(
-            Optional<String> settlement, Optional<ParcelType> parcelType) {
-
-        return addresseeRepository.readAddresseesAndParcelsOptionalSettlementAndParcelType(settlement, parcelType)
-                .stream()
-                .map(addressee -> modelMapper.map(addressee, AddresseeDto.class))
-                .collect(Collectors.toList());
     }
 }
