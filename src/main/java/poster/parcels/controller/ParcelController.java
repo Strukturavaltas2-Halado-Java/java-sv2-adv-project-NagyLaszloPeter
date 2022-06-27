@@ -22,6 +22,7 @@ public class ParcelController {
 
     private ParcelService parcelService;
 
+
     @GetMapping
     @Operation(summary = "List all Parcels")
     @ApiResponse(responseCode = "200", description = "Parcels-Query success.")
@@ -37,15 +38,17 @@ public class ParcelController {
         return parcelService.readParcelFromId(id);
     }
 
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Parcel-Creator")
     @ApiResponse(responseCode = "201", description = "Parcel created.")
     public ParcelDto postParcel(
             @Valid
-            @RequestBody CreateParcelCommand createCommand){
+            @RequestBody CreateParcelCommand createCommand) {
         return parcelService.createParcel(createCommand);
     }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,5 +58,4 @@ public class ParcelController {
             @PathVariable("id") long id) {
         parcelService.deleteParcelById(id);
     }
-
 }

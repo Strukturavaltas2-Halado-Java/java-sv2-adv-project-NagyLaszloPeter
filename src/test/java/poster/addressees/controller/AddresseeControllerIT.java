@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -45,7 +46,37 @@ class AddresseeControllerIT {
 
 
     @Test
-    void getAllAddressees() {
+    void testGetAllAddressesAndParcelsOptionalSettlementAndParcelType() {
+        webTestClient.post()
+                .uri("api/addressees")
+                .bodyValue(new CreateAddresseeCommand("Mikrooszoft Nyrt.", 1235, "Budapest", "1/A", Collections.singletonList(new CreateParcelCommand(
+                        "2222-3C4d-5E6f-8G9H", LocalDateTime.of(2022, 6, 16, 16, 16, 16), ParcelType.HUGE))))
+                .exchange();
+
+        webTestClient.post()
+                .uri("api/addressees")
+                .bodyValue(new CreateAddresseeCommand("Jós Nyrt. ", 1236, "Budapest", "2/C", Collections.singletonList(new CreateParcelCommand(
+                        "3333-3C4d-5E6f-8G9H", LocalDateTime.of(2022, 6, 16, 16, 16, 16), ParcelType.OVERSIZE))))
+                .exchange();
+
+        List<AddresseeDto> resultAddresseeDtos = webTestClient.get()
+                .uri(uriBuilder -> uriBuilder.path("api/addressees")
+                        .queryParam("settlement", "Budapest")
+                        .queryParam("parcelType", ParcelType.HUGE)
+                        .build())
+                .exchange()
+                .expectBodyList(AddresseeDto.class)
+                .returnResult().getResponseBody();
+
+        assertThat(resultAddresseeDtos)
+                .hasSize(2)
+                .extracting(a -> a.getParcels().size(), AddresseeDto::getSettlement, AddresseeDto::getAddresseeName)
+                .containsOnly(tuple(1, "Budapest", "Mikrooszoft Nyrt."),
+                        tuple(1, "Budapest", "Training 360 Kft."));
+    }
+
+    @Test
+    void testGetAllAddressees() {
         webTestClient.get()
                 .uri("api/addressees")
                 .exchange()
@@ -144,7 +175,7 @@ class AddresseeControllerIT {
                         URI.create("parcel/addressee-Logistics-Load-Over"),
                         "To much load capacity",
                         Status.NOT_ACCEPTABLE,
-                        "This load capacity in Addressee: 18");
+                        "This load: 18 is over maximum limit of: 10");
     }
 
     @Test

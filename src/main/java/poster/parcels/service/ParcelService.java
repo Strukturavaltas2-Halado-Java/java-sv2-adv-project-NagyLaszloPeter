@@ -31,7 +31,7 @@ public class ParcelService {
     }
 
     public ParcelDto readParcelFromId(long id) {
-        return modelMapper.map(getParcelId(id), ParcelDto.class);
+        return modelMapper.map(validateAndGetParcelId(id), ParcelDto.class);
     }
 
 
@@ -50,7 +50,8 @@ public class ParcelService {
         }
     }
 
-    private Parcel getParcelId(long id) {
+
+    private Parcel validateAndGetParcelId(long id) {
         return parcelRepository.findById(id)
                 .orElseThrow(() -> new ParcelNotFoundException(id));
     }

@@ -9,8 +9,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Setter @Getter
 public class ParcelDto {
+
     private Long id;
     private String senderId;
     private LocalDateTime sendingDateOfTime;
     private ParcelType parcelType;
+
 }

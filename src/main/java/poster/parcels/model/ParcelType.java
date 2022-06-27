@@ -6,6 +6,7 @@ public enum ParcelType {
 
     private final int capacity;
 
+
     ParcelType(int capacity) {
         this.capacity = capacity;
     }

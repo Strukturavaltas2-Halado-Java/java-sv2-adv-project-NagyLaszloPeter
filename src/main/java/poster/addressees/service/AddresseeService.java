@@ -18,6 +18,7 @@ import poster.parcels.repository.ParcelRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,14 +32,9 @@ public class AddresseeService {
     private ModelMapper modelMapper;
 
 
-    public List<AddresseeDto> readAllAddressees() {
-        return addresseeRepository.findAll().stream()
-                .map(addressee -> modelMapper.map(addressee, AddresseeDto.class))
-                .collect(Collectors.toList());
-    }
 
     public AddresseeDto readAddresseeFromId(long id) {
-        return modelMapper.map(getAddresseeById(id), AddresseeDto.class);
+        return modelMapper.map(validateAndGetAddresseeById(id), AddresseeDto.class);
     }
 
     @Transactional
@@ -55,7 +51,7 @@ public class AddresseeService {
 
     @Transactional
     public AddresseeDto createParcelToAddressById(Long id, CreateParcelCommand createParcelCommand) {
-        Addressee addressee = getAddresseeById(id);
+        Addressee addressee = validateAndGetAddresseeById(id);
         Parcel parcel = modelMapper.map(createParcelCommand, Parcel.class);
         validateParcel(parcel, addressee);
         addressee.addParcels(parcel);
@@ -79,12 +75,13 @@ public class AddresseeService {
 
     @Transactional
     public void deleteAddresseeById(long id) {
-        parcelRepository.deleteAll(getAddresseeById(id).getParcels());
+        parcelRepository.deleteAll(validateAndGetAddresseeById(id).getParcels());
         addresseeRepository.deleteById(id);
     }
 
 
-    private Addressee getAddresseeById(long id) {
+
+    private Addressee validateAndGetAddresseeById(long id) {
         return addresseeRepository.findById(id)
                 .orElseThrow(() -> new AddresseeNotFoundException(id));
     }
@@ -103,5 +100,14 @@ public class AddresseeService {
         return addressee.getParcels().stream()
                 .mapToInt(value -> value.getParcelType().getCapacity())
                 .sum() + parcelType.getCapacity();
+    }
+
+    public List<AddresseeDto> getAddresseesAndParcelsOptionalSettlementAndParcelType(
+            Optional<String> settlement, Optional<ParcelType> parcelType) {
+
+        return addresseeRepository.readAddresseesAndParcelsOptionalSettlementAndParcelType(settlement, parcelType)
+                .stream()
+                .map(addressee -> modelMapper.map(addressee, AddresseeDto.class))
+                .collect(Collectors.toList());
     }
 }

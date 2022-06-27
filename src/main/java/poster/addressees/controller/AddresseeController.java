@@ -10,9 +10,11 @@ import poster.addressees.dto.CreateAddresseeCommand;
 import poster.addressees.dto.UpdateAddresseeWithUnaddressedParcelCommand;
 import poster.addressees.service.AddresseeService;
 import poster.parcels.dtos.CreateParcelCommand;
+import poster.parcels.model.ParcelType;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/addressees")
@@ -22,11 +24,14 @@ public class AddresseeController {
     private AddresseeService addresseeService;
 
 
-    @GetMapping
-    @Operation(summary = "List all Addressees", description = "Show the Addresses list Java-Babe.")
-    @ApiResponse(responseCode = "200", description = "Addresses-Query success.")
-    public List<AddresseeDto> getAllAddressees() {
-        return addresseeService.readAllAddressees();
+    @GetMapping()
+    @Operation(summary = "List Addressees and parcel's",
+            description = "List -all- Addressee -optional settlement-, AND addresse's parcels -optional Parcel type-.")
+    @ApiResponse(responseCode = "200", description = "Addresse & Parcells - Query success.")
+    public List<AddresseeDto> listAddresseesAndParcelsOptionalSettlementAndParcelType(
+            @Valid @RequestParam Optional<String> settlement,
+            @Valid @RequestParam Optional<ParcelType> parcelType) {
+        return addresseeService.getAddresseesAndParcelsOptionalSettlementAndParcelType(settlement, parcelType);
     }
 
     @GetMapping("/{id}")
@@ -36,6 +41,7 @@ public class AddresseeController {
             @PathVariable("id") long id) {
         return addresseeService.readAddresseeFromId(id);
     }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -51,11 +57,12 @@ public class AddresseeController {
     @Operation(summary = "Parcel-Creator to Addressee")
     @ApiResponse(responseCode = "201", description = "Parcel created to Addressee.")
     public AddresseeDto postParcelToAddressee(
-            @Valid
             @PathVariable("id") Long id,
+            @Valid
             @RequestBody CreateParcelCommand createCommand) {
         return addresseeService.createParcelToAddressById(id, createCommand);
     }
+
 
     @PutMapping("/{id}/parcels")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -69,9 +76,10 @@ public class AddresseeController {
         return addresseeService.updateAddresseeWithUnaddressedParcel(id, updateCommand);
     }
 
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "DELETE: Addressee with all parcells")
+    @Operation(summary = "DELETE: Addressee with all parcels")
     @ApiResponse(responseCode = "204",
             description = "Addressee deleted.")
     public void deleteLocation(

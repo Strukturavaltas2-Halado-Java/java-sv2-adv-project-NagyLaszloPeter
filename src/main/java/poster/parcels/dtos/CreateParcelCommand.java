@@ -23,9 +23,11 @@ public class CreateParcelCommand {
             example = "1A2b-3C4d-5E6f-8G9H")
     private String senderId;
 
+
     @PastOrPresent(message = "Date can at take place in the future.")
     @NotNull(message = "Date must not null.")
     private LocalDateTime sendingDateOfTime;
+
 
     @NotNull(message = "Parcel type must not be null.")
     private ParcelType parcelType;

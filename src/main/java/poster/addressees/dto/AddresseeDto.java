@@ -16,4 +16,5 @@ public class AddresseeDto {
     private String settlement;
     private String addresseeNumber;
     private List<ParcelDto> parcels;
+
 }

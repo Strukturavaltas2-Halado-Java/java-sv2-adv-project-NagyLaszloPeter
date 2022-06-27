@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "parcels")
 public class Parcel {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,6 +33,7 @@ public class Parcel {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "addressee_id")
     private Addressee addressee;
+
 
     public Parcel(String senderId, LocalDateTime sendingDateOfTime, ParcelType parcelType) {
         this.senderId = senderId;
