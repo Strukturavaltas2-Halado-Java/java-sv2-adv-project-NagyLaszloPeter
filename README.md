@@ -57,7 +57,8 @@ az adatbázis nyilvántartásába címzett nélkül.)*
 * Törlése ID alapján egy adott csomagnak.
 
 `Címzett szolgáltatások - AddresseeService`
-* Lekérdezhetőség az összes címzet és csomagja (összes) vonatkozásában.
+* Lekérdezhetőség  -a településnév, illetőleg a csomag típusa lehetőségszerű megadásával- 
+az összes címzet és csomagja (összes) vonatkozásában.
 * Új címzett csomag felvétele (létrehozás), amely az adatbázisba-táblákba mentésre kerül.
 * Lekérdezhetősége egy adott címzettnek a címzett ID alapján.
 * Törlése ID alapján egy adott címzettnek csomagjaival együtt.
