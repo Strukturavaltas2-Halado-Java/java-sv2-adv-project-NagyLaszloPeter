@@ -25,8 +25,8 @@ public class AddresseeController {
 
 
     @GetMapping()
-    @Operation(summary = "List Addressees and parcel's",
-            description = "List -all- Addressee -optional settlement-, AND addresse's parcels -optional Parcel type-.")
+    @Operation(summary = "List Addressees' parcels",
+            description = "List -all- Addressee -optional settlement-, AND Addressees' parcels -optional Parcel type-.")
     @ApiResponse(responseCode = "200", description = "Addresse & Parcells - Query success.")
     public List<AddresseeDto> listAddresseesAndParcelsOptionalSettlementAndParcelType(
             @Valid @RequestParam Optional<String> settlement,
