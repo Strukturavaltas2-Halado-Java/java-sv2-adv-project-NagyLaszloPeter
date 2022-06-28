@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import poster.parcels.dtos.CreateParcelCommand;
-import poster.parcels.dtos.ParcelDto;
-import poster.parcels.exceptions.ParcelNotFoundException;
-import poster.parcels.model.Parcel;
+import poster.parcels.dto.CreateParcelCommand;
+import poster.parcels.dto.ParcelDto;
+import poster.parcels.exception.ParcelNotFoundException;
+import poster.parcels.exception.model.Parcel;
 import poster.parcels.repository.ParcelRepository;
 
 import javax.transaction.Transactional;

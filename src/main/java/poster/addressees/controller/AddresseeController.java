@@ -1,6 +1,7 @@
 package poster.addressees.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
@@ -10,8 +11,8 @@ import poster.addressees.dto.AddresseeDto;
 import poster.addressees.dto.CreateAddresseeCommand;
 import poster.addressees.dto.UpdateAddresseeWithUnaddressedParcelCommand;
 import poster.addressees.service.AddresseeService;
-import poster.parcels.dtos.CreateParcelCommand;
-import poster.parcels.model.ParcelType;
+import poster.parcels.dto.CreateParcelCommand;
+import poster.parcels.exception.model.ParcelType;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -30,8 +31,10 @@ public class AddresseeController {
             description = "List -all- Addressee -optional settlement-, AND Addressees' parcels -optional Parcel type-.")
     @ApiResponse(responseCode = "200", description = "Addresse & Parcells - Query success.")
     public List<AddresseeDto> listAddresseesAndParcelsOptionalSettlementAndParcelType(
-            @Schema(example = "Budapest") @Valid @RequestParam Optional<String> settlement,
-            @Schema(example = "HUGE") @Valid @RequestParam Optional<ParcelType> parcelType) {
+            @Parameter(name = "SETTLEMENT name", schema = @Schema(example = "Budapest"))
+            @Valid @RequestParam Optional<String> settlement,
+            @Schema(name = "PARCEL TYPE", example = "HUGE")
+            @Valid @RequestParam Optional<ParcelType> parcelType) {
         return addresseeService.getAddresseesAndParcelsOptionalSettlementAndParcelType(settlement, parcelType);
     }
 
@@ -39,6 +42,7 @@ public class AddresseeController {
     @Operation(summary = "Find one Addressee from ID")
     @ApiResponse(responseCode = "200", description = "Addressee-Query success.")
     public AddresseeDto getAddresseeById(
+            @Parameter(name = "ADDRESSEE ID", schema = @Schema(example = "1"))
             @PathVariable("id") long id) {
         return addresseeService.readAddresseeFromId(id);
     }

@@ -1,7 +1,7 @@
 package poster.addressees.model;
 
 import lombok.*;
-import poster.parcels.model.Parcel;
+import poster.parcels.exception.model.Parcel;
 
 import javax.persistence.*;
 import java.util.ArrayList;

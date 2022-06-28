@@ -1,7 +1,7 @@
-package poster.parcels.dtos;
+package poster.parcels.dto;
 
 import lombok.*;
-import poster.parcels.model.ParcelType;
+import poster.parcels.exception.model.ParcelType;
 import java.time.LocalDateTime;
 
 

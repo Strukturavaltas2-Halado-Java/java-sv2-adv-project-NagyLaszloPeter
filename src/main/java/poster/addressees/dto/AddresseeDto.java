@@ -1,7 +1,7 @@
 package poster.addressees.dto;
 
 import lombok.*;
-import poster.parcels.dtos.ParcelDto;
+import poster.parcels.dto.ParcelDto;
 
 import java.util.List;
 

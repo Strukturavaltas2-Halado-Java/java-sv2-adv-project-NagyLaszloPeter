@@ -11,9 +11,9 @@ import org.zalando.problem.Status;
 import poster.addressees.dto.AddresseeDto;
 import poster.addressees.dto.CreateAddresseeCommand;
 import poster.addressees.dto.UpdateAddresseeWithUnaddressedParcelCommand;
-import poster.parcels.dtos.CreateParcelCommand;
-import poster.parcels.dtos.ParcelDto;
-import poster.parcels.model.ParcelType;
+import poster.parcels.dto.CreateParcelCommand;
+import poster.parcels.dto.ParcelDto;
+import poster.parcels.exception.model.ParcelType;
 
 import java.net.URI;
 import java.time.LocalDateTime;

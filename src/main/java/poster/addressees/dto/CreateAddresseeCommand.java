@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import poster.parcels.dtos.CreateParcelCommand;
+import poster.parcels.dto.CreateParcelCommand;
 
 import javax.validation.constraints.*;
 import java.util.List;

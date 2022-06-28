@@ -1,4 +1,4 @@
-package poster.addressees.exceptions;
+package poster.addressees.exception;
 
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;

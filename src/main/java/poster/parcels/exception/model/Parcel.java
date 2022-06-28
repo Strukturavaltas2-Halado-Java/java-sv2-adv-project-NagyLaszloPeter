@@ -1,4 +1,4 @@
-package poster.parcels.model;
+package poster.parcels.exception.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

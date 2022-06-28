@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import poster.addressees.model.Addressee;
-import poster.parcels.model.ParcelType;
+import poster.parcels.exception.model.ParcelType;
 
 import java.util.List;
 import java.util.Optional;

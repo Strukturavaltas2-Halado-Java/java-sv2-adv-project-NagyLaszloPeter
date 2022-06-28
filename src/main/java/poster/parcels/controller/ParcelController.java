@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import poster.parcels.dtos.CreateParcelCommand;
-import poster.parcels.dtos.ParcelDto;
+import poster.parcels.dto.CreateParcelCommand;
+import poster.parcels.dto.ParcelDto;
 import poster.parcels.service.ParcelService;
 
 import javax.validation.Valid;

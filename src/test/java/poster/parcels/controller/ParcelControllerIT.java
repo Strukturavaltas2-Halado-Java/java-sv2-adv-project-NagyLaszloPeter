@@ -8,9 +8,9 @@ import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-import poster.parcels.dtos.CreateParcelCommand;
-import poster.parcels.dtos.ParcelDto;
-import poster.parcels.model.ParcelType;
+import poster.parcels.dto.CreateParcelCommand;
+import poster.parcels.dto.ParcelDto;
+import poster.parcels.exception.model.ParcelType;
 import poster.parcels.service.ParcelService;
 
 import java.net.URI;
