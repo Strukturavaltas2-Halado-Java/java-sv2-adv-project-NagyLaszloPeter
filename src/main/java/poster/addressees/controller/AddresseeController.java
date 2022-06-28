@@ -1,6 +1,7 @@
 package poster.addressees.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,8 +30,8 @@ public class AddresseeController {
             description = "List -all- Addressee -optional settlement-, AND Addressees' parcels -optional Parcel type-.")
     @ApiResponse(responseCode = "200", description = "Addresse & Parcells - Query success.")
     public List<AddresseeDto> listAddresseesAndParcelsOptionalSettlementAndParcelType(
-            @Valid @RequestParam Optional<String> settlement,
-            @Valid @RequestParam Optional<ParcelType> parcelType) {
+            @Schema(example = "Budapest") @Valid @RequestParam Optional<String> settlement,
+            @Schema(example = "HUGE") @Valid @RequestParam Optional<ParcelType> parcelType) {
         return addresseeService.getAddresseesAndParcelsOptionalSettlementAndParcelType(settlement, parcelType);
     }
 
