@@ -42,7 +42,7 @@ public class AddresseeController {
     @Operation(summary = "Find one Addressee from ID")
     @ApiResponse(responseCode = "200", description = "Addressee-Query success.")
     public AddresseeDto getAddresseeById(
-            @Parameter(name = "ADDRESSEE ID", schema = @Schema(example = "1"))
+            @Parameter(name = "ADDRESSEE ID", description = "Please enter the ID: ", schema = @Schema(example = "1"))
             @PathVariable("id") long id) {
         return addresseeService.readAddresseeFromId(id);
     }
